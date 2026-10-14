@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <section class="hero-section">
+        <div class="hero-section__wrap">
+          <h1 class="hero-section__title">Task Manager</h1>
+          <p class="hero-section__desc">Отслеживайте задачи каждый день</p>
+        </div>
+      </section>
+
+      <section class="stat-section">
+        <div class="stat-section__wrap">
+          <div class="stat-section__item stat-item">
+            <span class="stat-item__status stat-item__status--todo">To Do</span>
+            <span class="stat-item__count" id="todo-count">0</span>
+          </div>
+
+          <div class="stat-section__item stat-item">
+            <span class="stat-item__status stat-item__status--inprogress"
+              >In progress</span
+            >
+            <span class="stat-item__count" id="inprogress-count">0</span>
+          </div>
+
+          <div class="stat-section__item stat-item">
+            <span class="stat-item__status stat-item__status--completed"
+              >Completed</span
+            >
+            <span class="stat-item__count" id="completed-count">0</span>
+          </div>
+
+          <div class="stat-section__item stat-item">
+            <span class="stat-item__status stat-item__status--all">All</span>
+            <span class="stat-item__count" id="all-count">0</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="tasks">
+        <div class="tasks__wrap">
+          <div class="tasks__panel form-block">
+            <h2 class="form-block__title">Добавление задачи</h2>
+            <form action="" class="form" id="form-add">
+              <div class="form__field field">
+                <label for="task-title" class="field__label"
+                  >Название задачи</label
+                >
+                <input
+                  type="text"
+                  id="task-title"
+                  class="field__input"
+                  name="task-title"
+                  placeholder="Введите название задачи..."
+                />
+              </div>
+
+              <div class="form__field field">
+                <label for="task-desc" class="field__label"
+                  >Описание задачи</label
+                >
+                <textarea
+                  id="task-desc"
+                  name="task-desc"
+                  placeholder="Что нужно сделать?"
+                  rows="3"
+                  maxlength="500"
+                  class="field__input"
+                ></textarea>
+              </div>
+
+              <div class="form__field field">
+                <label for="task-category" class="field__label"
+                  >Категория</label
+                >
+                <select
+                  id="task-category"
+                  class="field__select"
+                  name="task-category"
+                >
+                  <option value="study">Учеба</option>
+                  <option value="work">Работа</option>
+                  <option value="personal">Персональное</option>
+                  <option value="other">Другое</option>
+                </select>
+              </div>
+
+              <div class="form__field field">
+                <label for="task-priority" class="field__label"
+                  >Приоритет</label
+                >
+                <select
+                  id="task-priority"
+                  class="field__select"
+                  name="task-priority"
+                >
+                  <option value="low">Низкий</option>
+                  <option value="medium" selected>Средний</option>
+                  <option value="high">Высокий</option>
+                </select>
+              </div>
+
+              <div class="form__field field">
+                <label for="task-due" class="field__label"
+                  >Срок выполнения задачи</label
+                >
+                <input
+                  type="date"
+                  id="task-due"
+                  class="field__input"
+                  name="task-due"
+                />
+              </div>
+
+              <button type="submit" class="btn btn--save">
+                Добавить задачу <span>+</span>
+              </button>
+            </form>
+          </div>
+
+          <div class="tasks__panel task-block">
+            <div class="task-block__head">
+              <h2 class="task-block__title">Все задачи</h2>
+              <!-- <div class="task-block__subtitle">
+                Всего <span id="task-block__count" id="all-count">(0)</span>
+              </div> -->
+            </div>
+
+            <div class="search-field">
+              <input
+                type="text"
+                class="search-field__input"
+                placeholder="Поиск задач..."
+                id="search-input"
+              />
+            </div>
+
+            <div class="task-block__filters">
+              <div class="task-block__field field">
+                <label for="filter-category" class="field__label"
+                  >Категория</label
+                >
+                <select
+                  id="filter-category"
+                  class="field__select"
+                  name="filter-category"
+                >
+                  <option value="all" selected>Все</option>
+                  <option value="study">Учеба</option>
+                  <option value="work">Работа</option>
+                  <option value="personal">Персональное</option>
+                  <option value="other">Другое</option>
+                </select>
+              </div>
+
+              <div class="task-block__field field">
+                <label for="filter-priority" class="field__label"
+                  >Приоритет</label
+                >
+                <select
+                  id="filter-priority"
+                  class="field__select"
+                  name="filter-priority"
+                >
+                  <option value="all" selected>Все</option>
+                  <option value="low">Низкий</option>
+                  <option value="medium">Средний</option>
+                  <option value="high">Высокий</option>
+                </select>
+              </div>
+
+              <div class="task-block__field field">
+                <label for="filter-sort" class="field__label">Сортировка</label>
+                <select
+                  id="filter-sort"
+                  class="field__select"
+                  name="filter-sort"
+                >
+                  <option value="new" selected>Новые</option>
+                  <option value="due">По сроку выполнения</option>
+                  <option value="priority">По приоритету</option>
+                </select>
+              </div>
+
+              <button
+                type="button"
+                class="task-block__btn btn btn--search"
+                id="btn-search"
+              >
+                Поиск
+              </button>
+
+              <button
+                type="button"
+                class="task-block__btn btn btn--reset"
+                id="btn-reset"
+              >
+                Сбросить
+              </button>
+            </div>
+
+            <div class="task-block__tasks" id="task-list"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
