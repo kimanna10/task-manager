@@ -15,6 +15,7 @@ const resetBtn = document.querySelector("#btn-reset");
 const searchBtn = document.querySelector("#btn-search");
 
 const totalCount = document.querySelector("#all-count");
+const totalCurrent = document.querySelector("#all");
 const todoCount = document.querySelector("#todo-count");
 const inProgressCount = document.querySelector("#inprogress-count");
 const completedCount = document.querySelector("#completed-count");
@@ -114,8 +115,6 @@ function getVisibleTasks() {
   const selectedCategory = categoryFilter.value;
   const selectedPriority = priorityFilter.value;
 
-  console.log(query === "");
-
   const selectedSort = sortFilter.value;
 
   let result = tasks.filter((task) => {
@@ -151,7 +150,7 @@ function getVisibleTasks() {
 function renderTasks() {
   const visibleTasks = getVisibleTasks(); // получаем все отфильтрованные и отсортированные задачи
 
-  totalCount.textContent = `(${visibleTasks.length})`; // отображаем кол-во задач в HTML
+  totalCurrent.textContent = `(${visibleTasks.length})`; // отображаем кол-во задач в HTML
 
   if (visibleTasks.length === 0) {
     taskList.innerHTML = '<p class="no-res">задач не найдено...</p>';
@@ -176,6 +175,7 @@ function renderStats() {
     return task.status === "inprogress";
   }).length;
 
+  totalCount.textContent = total;
   completedCount.textContent = completed;
   todoCount.textContent = todo;
   inProgressCount.textContent = inprogress;
