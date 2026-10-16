@@ -20,6 +20,8 @@ const todoCount = document.querySelector("#todo-count");
 const inProgressCount = document.querySelector("#inprogress-count");
 const completedCount = document.querySelector("#completed-count");
 
+const today = getLocalDateString(); // сегодняшняя дата
+
 const priorityOrder = {
   high: 3,
   medium: 2,
@@ -46,6 +48,8 @@ let tasks = [
     category: "study",
     priority: "low",
     status: "todo",
+    dueDate: getLocalDateString(new Date(Date.now() + 86400000)), // milliseconds
+    createdAt: today,
   },
   {
     id: 2,
@@ -54,6 +58,8 @@ let tasks = [
     category: "other",
     priority: "low",
     status: "inprogress",
+    dueDate: getLocalDateString(new Date(Date.now() + 86400000)),
+    createdAt: today,
   },
   {
     id: 3,
@@ -62,6 +68,8 @@ let tasks = [
     category: "study",
     priority: "high",
     status: "completed",
+    dueDate: getLocalDateString(new Date(Date.now() + 86400000)),
+    createdAt: today,
   },
 ];
 
@@ -72,19 +80,23 @@ taskForm.addEventListener("submit", (event) => {
   const desc = taskDesc.value.trim();
   const category = taskCategory.value;
   const priority = taskPriority.value;
+  const due = taskDueDate.value;
 
   const newTask = {
-    id: Date.now(), // ex: 1791988153128
+    id: Date.now(), // ex: 1791988153128 [01.01.1970]
     title: title,
     desc: desc,
     category: category,
     priority: priority,
     status: "todo",
+    dueDate: due,
+    createdAt: getLocalDateString(),
   };
 
   tasks.unshift(newTask); // .push()
   taskForm.reset();
   taskPriority.value = "medium";
+  taskDueDate.min = getLocalDateString();
 
   renderApp();
 });
@@ -100,6 +112,7 @@ function displayTasks(task) {
                 <div class="task-item__details">
                   <p class="task-item__prop">${task.category}</p>
                   <p class="task-item__prop">${statusLabels[task.status]}</p>
+                  <p class="task-item__prop">${formatDate(task.dueDate)}</p>
                 </div>
 
                 <div class="task-item__actions">
@@ -108,6 +121,23 @@ function displayTasks(task) {
                   </button>
                 </div>
               </div>`;
+}
+
+function formatDate(dateString) {
+  // dateString => 2026-10-22
+  if (!dateString) {
+    return "Нет срока выполнения";
+  }
+  const [year, month, day] = dateString.split("-").map(Number);
+  return new Date(year, month - 1, day).toLocaleDateString("ru-RU", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
+  // 22/10/2026
+  // 22.10.2026
+  // 2026.10.22
 }
 // Формирует новый массив задач с фильтрацией и сортирует его
 function getVisibleTasks() {
@@ -186,6 +216,14 @@ function renderApp() {
   renderStats();
 }
 
+function getLocalDateString(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`; // => 2026-10-16
+}
+
 searchBtn.addEventListener("click", () => {
   renderTasks();
 });
@@ -197,4 +235,31 @@ resetBtn.addEventListener("click", () => {
   sortFilter.value = "new";
 });
 
-renderApp();
+renderApp(); // display tasks
+
+taskList.addEventListener("click", (event) => {
+  const buttonDelete = event.target.closest(".btn--delete");
+  if (!buttonDelete) {
+    return;
+  }
+  const taskId = Number(buttonDelete.dataset.id); // ex: task id = 3
+  tasks = tasks.filter((task) => {
+    return task.id !== taskId;
+  });
+
+  renderApp(); // display tasks
+});
+
+const dateExample = new Date("2026-10-02");
+console.log(dateExample.getFullYear()); // 2026
+console.log(dateExample.getMonth()); // 9 index
+console.log(dateExample.getDate()); // 2
+
+console.log(getLocalDateString()); // 2026-09-16
+
+// getDay() => day of the week
+// sun=0 mon=1 tue=2 wen=3 thu=4 fri=5 sat=6
+
+// 10 => october
+// [jan=0, feb=2, march, apl]
+// 1, 2, 3, 4
