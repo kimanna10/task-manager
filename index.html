@@ -210,5 +210,89 @@
         </div>
       </section>
     </main>
+
+    <div class="modal" id="modal-edit">
+      <div class="modal__wrap">
+        <form class="form" id="form-edit">
+          <div class="form__field field">
+            <label for="task-title-edit" class="field__label"
+              >Название задачи</label
+            >
+            <input
+              type="text"
+              id="task-title-edit"
+              class="field__input"
+              name="task-title-edit"
+              placeholder="Введите название задачи..."
+            />
+          </div>
+
+          <div class="form__field field">
+            <label for="task-desc-edit" class="field__label"
+              >Описание задачи</label
+            >
+            <textarea
+              id="task-desc-edit"
+              name="task-desc-edit"
+              placeholder="Что нужно сделать?"
+              rows="3"
+              maxlength="500"
+              class="field__input"
+            ></textarea>
+          </div>
+
+          <div class="form__field field">
+            <label for="task-category-edit" class="field__label"
+              >Категория</label
+            >
+            <select
+              id="task-category-edit"
+              class="field__select"
+              name="task-category-edit"
+            >
+              <option value="study">Учеба</option>
+              <option value="work">Работа</option>
+              <option value="personal">Персональное</option>
+              <option value="other">Другое</option>
+            </select>
+          </div>
+
+          <div class="form__field field">
+            <label for="task-priority-edit" class="field__label"
+              >Приоритет</label
+            >
+            <select
+              id="task-priority-edit"
+              class="field__select"
+              name="task-priority-edit"
+            >
+              <option value="low">Низкий</option>
+              <option value="medium" selected>Средний</option>
+              <option value="high">Высокий</option>
+            </select>
+          </div>
+
+          <div class="form__field field">
+            <label for="task-due-edit" class="field__label"
+              >Срок выполнения задачи</label
+            >
+            <input
+              type="date"
+              id="task-due-edit"
+              class="field__input"
+              name="task-due-edit"
+            />
+          </div>
+          <div class="form_actions">
+            <button type="submit" class="btn btn--save-edit">
+              Изменить задачу
+            </button>
+            <button type="button" class="btn btn--cancel" id="close-modal-edit">
+              Отменить
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </body>
 </html>
