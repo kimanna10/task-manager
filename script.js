@@ -50,34 +50,60 @@ const priorityLabels = {
   low: "Низкий",
 };
 
+const categoryLabels = {
+  study: "Учёба",
+  work: "Работа",
+  personal: "Персональное",
+  other: "Другое",
+};
 let tasks = [
   {
     id: 1,
-    title: "qwerty",
-    desc: "12345desc",
+    title: "Изучить JavaScript",
+    desc: "Попрактиковаться с массивами и объектами",
     category: "study",
-    priority: "low",
+    priority: "high",
     status: "todo",
-    dueDate: getLocalDateString(new Date(Date.now() + 86400000)), // milliseconds
-    createdAt: today,
-  },
-  {
-    id: 2,
-    title: "qwerty",
-    desc: "123456789desc",
-    category: "other",
-    priority: "low",
-    status: "inprogress",
     dueDate: getLocalDateString(new Date(Date.now() + 86400000)),
     createdAt: today,
   },
   {
+    id: 2,
+    title: "Обновить портфолио",
+    desc: "Добавить новые проекты и скриншоты",
+    category: "work",
+    priority: "medium",
+    status: "inprogress",
+    dueDate: getLocalDateString(new Date(Date.now() + 2 * 86400000)),
+    createdAt: today,
+  },
+  {
     id: 3,
-    title: "qwerty",
-    desc: "54321desc",
+    title: "Прочитать книгу",
+    desc: "Прочитать 20 страниц перед сном",
+    category: "personal",
+    priority: "low",
+    status: "todo",
+    dueDate: getLocalDateString(new Date(Date.now() + 3 * 86400000)),
+    createdAt: today,
+  },
+  {
+    id: 4,
+    title: "Подготовить презентацию",
+    desc: "Создать слайды для следующего занятия",
     category: "study",
     priority: "high",
     status: "completed",
+    dueDate: getLocalDateString(new Date(Date.now() - 86400000)),
+    createdAt: today,
+  },
+  {
+    id: 5,
+    title: "Купить продукты",
+    desc: "Купить яйца, молоко, овощи и хлеб",
+    category: "other",
+    priority: "medium",
+    status: "inprogress",
     dueDate: getLocalDateString(new Date(Date.now() + 86400000)),
     createdAt: today,
   },
@@ -120,7 +146,7 @@ function displayTasks(task) {
                 </div>
 
                 <div class="task-item__details">
-                  <p class="task-item__prop">${task.category}</p>
+                  <p class="task-item__prop">${categoryLabels[task.category]}</p>
                   <p class="task-item__prop">${statusLabels[task.status]}</p>
                   <p class="task-item__prop">${formatDate(task.dueDate)}</p>
                 </div>
