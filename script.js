@@ -5,6 +5,13 @@ const taskCategory = document.querySelector("#task-category");
 const taskPriority = document.querySelector("#task-priority");
 const taskDueDate = document.querySelector("#task-due");
 
+const taskFormEdit = document.querySelector("#form-edit");
+const taskTitleEdit = document.querySelector("#task-title-edit");
+const taskDescEdit = document.querySelector("#task-desc-edit");
+const taskCategoryEdit = document.querySelector("#task-category-edit");
+const taskPriorityEdit = document.querySelector("#task-priority-edit");
+const taskDueDateEdit = document.querySelector("#task-due-edit");
+
 const taskList = document.querySelector("#task-list");
 const searchInput = document.querySelector("#search-input");
 
@@ -19,6 +26,9 @@ const totalCurrent = document.querySelector("#all");
 const todoCount = document.querySelector("#todo-count");
 const inProgressCount = document.querySelector("#inprogress-count");
 const completedCount = document.querySelector("#completed-count");
+
+const modalEdit = document.querySelector("#modal-edit");
+const modalCloseBtn = document.querySelector("#close-modal-edit");
 
 const today = getLocalDateString(); // сегодняшняя дата
 
@@ -116,6 +126,9 @@ function displayTasks(task) {
                 </div>
 
                 <div class="task-item__actions">
+                  <button class="task-item__btn btn btn--edit" type="button" data-id="${task.id}">
+                    Изменить
+                  </button>
                   <button class="task-item__btn btn btn--delete" type="button" data-id="${task.id}">
                     Удалить
                   </button>
@@ -233,22 +246,81 @@ resetBtn.addEventListener("click", () => {
   categoryFilter.value = "all";
   priorityFilter.value = "all";
   sortFilter.value = "new";
+  renderTasks();
 });
 
-renderApp(); // display tasks
-
 taskList.addEventListener("click", (event) => {
-  const buttonDelete = event.target.closest(".btn--delete");
-  if (!buttonDelete) {
+  const button = event.target.closest(".btn");
+  if (!button) {
     return;
   }
+
+  if (button.classList.contains("btn--delete")) {
+    deleteTask(button);
+    renderApp(); // display tasks
+  } else if (button.classList.contains("btn--edit")) {
+    updateTask(button);
+  }
+});
+
+function deleteTask(buttonDelete) {
   const taskId = Number(buttonDelete.dataset.id); // ex: task id = 3
   tasks = tasks.filter((task) => {
     return task.id !== taskId;
   });
+}
 
-  renderApp(); // display tasks
+let editTaskId = null;
+function updateTask(buttonUpdate) {
+  const taskId = Number(buttonUpdate.dataset.id);
+  const task = tasks.find((task) => {
+    return task.id === taskId;
+  });
+  if (!task) {
+    return;
+  }
+  editTaskId = task.id;
+  taskTitleEdit.value = task.title;
+  taskDescEdit.value = task.desc;
+  taskCategoryEdit.value = task.category;
+  taskPriorityEdit.value = task.priority;
+  taskDueDateEdit.value = task.dueDate;
+
+  modalEdit.classList.add("opened");
+}
+modalCloseBtn.addEventListener("click", () => {
+  modalEdit.classList.remove("opened");
 });
+
+taskFormEdit.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const task = tasks.find((task) => {
+    return task.id === editTaskId;
+  });
+
+  if (!task) {
+    return;
+  }
+
+  task.title = taskTitleEdit.value.trim();
+  task.desc = taskDescEdit.value.trim();
+  task.category = taskCategoryEdit.value;
+  task.priority = taskPriorityEdit.value;
+  task.dueDate = taskDueDateEdit.value;
+
+  editTaskId = null;
+  modalEdit.classList.remove("opened");
+
+  renderApp();
+});
+
+modalEdit.addEventListener("click", (event) => {
+  if (event.target === modalEdit) {
+    modalEdit.classList.remove("opened");
+  }
+});
+renderApp(); // display tasks
 
 const dateExample = new Date("2026-10-02");
 console.log(dateExample.getFullYear()); // 2026
